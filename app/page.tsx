@@ -19,6 +19,7 @@ const BUSINESS = {
     "https://www.google.com/maps/dir/?api=1&destination=10%20W%20Grant%20Line%20Rd%2C%20Tracy%2C%20CA",
   reviews:
     "https://www.google.com/search?q=Tracy+Smog+Center+reviews",
+  instagram: "https://www.instagram.com/tracysmogcenter?igsh=amVrNHVpbmJhNjVp",
 } as const;
 
 const services = [
@@ -152,12 +153,22 @@ export default function Home() {
           <p>
             <span className="open-dot" aria-hidden="true" /> Open today {BUSINESS.hours} · Walk-ins welcome
           </p>
-          <a
-            href={BUSINESS.phoneHref}
-            onClick={() => track("call_click", { placement: "utility" })}
-          >
-            {BUSINESS.phoneDisplay}
-          </a>
+          <div className="utility-links">
+            <a
+              href={BUSINESS.instagram}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => track("social_click", { network: "instagram", placement: "utility" })}
+            >
+              Instagram
+            </a>
+            <a
+              href={BUSINESS.phoneHref}
+              onClick={() => track("call_click", { placement: "utility" })}
+            >
+              {BUSINESS.phoneDisplay}
+            </a>
+          </div>
         </div>
       </div>
 
@@ -496,6 +507,14 @@ export default function Home() {
             <a href="#privacy">Privacy</a>
             <a href="#faq">Frequently Asked Questions</a>
             <a href="#coupon">Website Coupon</a>
+            <a
+              href={BUSINESS.instagram}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => track("social_click", { network: "instagram", placement: "footer" })}
+            >
+              Follow on Instagram
+            </a>
           </div>
           <p className="copyright">© {new Date().getFullYear()} Tracy Smog Center</p>
         </div>

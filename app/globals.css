@@ -98,6 +98,21 @@ button {
   font-weight: 700;
 }
 
+.utility-links {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.utility-links a:first-child {
+  color: #d8eaff;
+}
+
+.utility-links a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .open-dot {
   display: inline-block;
   width: 8px;
