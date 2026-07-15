@@ -428,39 +428,6 @@ h1 {
   color: var(--blue-dark);
 }
 
-.proof-strip {
-  border-bottom: 1px solid var(--line);
-}
-
-.proof-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-}
-
-.proof-item {
-  min-height: 108px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  border-right: 1px solid var(--line);
-  padding: 20px;
-}
-
-.proof-item:first-child {
-  border-left: 1px solid var(--line);
-}
-
-.proof-item span {
-  color: #b8bdc2;
-  font-family: var(--font-outfit), Arial, sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-
-.proof-item strong {
-  font-size: 0.94rem;
-}
-
 .coupon-wrap {
   padding-block: 28px;
 }
@@ -873,12 +840,10 @@ h1 {
     gap: 42px;
   }
 
-  .proof-grid,
   .service-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .proof-item:nth-child(4),
   .service-card:nth-child(4) {
     border-left: 1px solid var(--line);
   }
@@ -1036,14 +1001,10 @@ h1 {
     gap: 4px;
   }
 
-  .proof-grid,
   .service-grid {
     grid-template-columns: 1fr;
   }
 
-  .proof-item,
-  .proof-item:first-child,
-  .proof-item:nth-child(4),
   .service-card:nth-child(4) {
     min-height: 76px;
     border-left: 1px solid var(--line);

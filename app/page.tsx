@@ -263,17 +263,6 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="proof-strip no-print" aria-label="Service highlights">
-          <div className="site-shell proof-grid">
-            {services.map((service) => (
-              <div className="proof-item" key={service.number}>
-                <span>{service.number}</span>
-                <strong>{service.title}</strong>
-              </div>
-            ))}
-          </div>
-        </section>
-
         <section className="coupon-wrap" id="coupon" ref={couponRef} aria-labelledby="coupon-title">
           <div className="site-shell">
             <article className="coupon">
