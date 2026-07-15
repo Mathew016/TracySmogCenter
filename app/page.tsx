@@ -286,16 +286,15 @@ export default function Home() {
                 </span>
               </div>
               <div className="coupon-actions no-print">
-                <button
-                  type="button"
+                <a
                   className="button button-outline-red"
-                  onClick={() => {
-                    track("coupon_print_or_save", { action: "print" });
-                    window.print();
-                  }}
+                  href="/tracy-smog-center-coupon.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => track("coupon_print_or_save", { action: "open_pdf" })}
                 >
                   Print Coupon
-                </button>
+                </a>
                 <a
                   href={BUSINESS.phoneHref}
                   onClick={() => track("call_click", { placement: "coupon" })}
