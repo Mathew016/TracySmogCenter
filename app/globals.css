@@ -220,22 +220,14 @@ nav a:hover {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
+  background-color: var(--white);
   background:
-    linear-gradient(to right, transparent calc(50% - 1px), rgba(217, 221, 225, 0.55) 50%, transparent calc(50% + 1px)),
-    var(--white);
+    linear-gradient(90deg, rgba(255, 255, 255, 0.97) 0%, rgba(255, 255, 255, 0.92) 38%, rgba(255, 255, 255, 0.7) 64%, rgba(255, 255, 255, 0.55) 100%),
+    url("/tracy-smog-center-storefront-hero.webp") center 48% / cover no-repeat;
 }
 
 .hero::after {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  right: 3vw;
-  top: 40px;
-  width: 280px;
-  height: 280px;
-  border: 1px solid var(--line);
-  transform: rotate(45deg);
-  opacity: 0.7;
+  content: none;
 }
 
 .hero-grid {
@@ -891,7 +883,9 @@ h1 {
   }
 
   .hero {
-    background: var(--white);
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.91), rgba(255, 255, 255, 0.91)),
+      url("/tracy-smog-center-storefront-hero.webp") center / cover no-repeat;
   }
 
   .hero-grid,
