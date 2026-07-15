@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 
 declare global {
@@ -19,7 +20,7 @@ const BUSINESS = {
     "https://www.google.com/maps/dir/?api=1&destination=10%20W%20Grant%20Line%20Rd%2C%20Tracy%2C%20CA",
   reviews:
     "https://www.google.com/search?q=Tracy+Smog+Center+reviews",
-  instagram: "https://www.instagram.com/tracysmogcenter?igsh=amVrNHVpbmJhNjVp",
+  instagram: "https://www.instagram.com/tracysmogcenter/",
 } as const;
 
 const services = [
@@ -175,12 +176,13 @@ export default function Home() {
       <header className="site-header no-print">
         <div className="site-shell header-inner">
           <a className="brand" href="#top" aria-label="Tracy Smog Center home">
-            <img
+            <Image
               className="brand-logo"
               src="/tracy-smog-center-logo.png"
               alt="Tracy Smog Center"
               width="150"
               height="150"
+              unoptimized
             />
           </a>
           <nav aria-label="Main navigation">
@@ -477,12 +479,13 @@ export default function Home() {
       <footer className="site-footer no-print">
         <div className="site-shell footer-grid">
           <div>
-            <img
+            <Image
               className="footer-logo"
               src="/tracy-smog-center-logo.png"
               alt="Tracy Smog Center"
               width="150"
               height="150"
+              unoptimized
             />
             <p>STAR-certified, test-only smog inspections for all cars, including diesel vehicles.</p>
           </div>

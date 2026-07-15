@@ -1,0 +1,17 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${APP_PORT:-3012}:3000"
+    environment:
+      HOSTNAME: "0.0.0.0"
+      NODE_ENV: "production"
+      PORT: "3000"
+    restart: unless-stopped
+
+networks:
+  default:
+    external: true
+    name: npm_default

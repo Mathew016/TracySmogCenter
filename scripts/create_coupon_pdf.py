@@ -82,7 +82,7 @@ def build_coupon(path: Path) -> None:
     pdf.setDash()
     pdf.setFillColor(muted)
     pdf.setFont("Helvetica", 7)
-    pdf.drawCentredString(width / 2, 34, "Tracy Smog Center | tracy-smog-center.travelingwithabeer.chatgpt.site")
+    pdf.drawCentredString(width / 2, 34, "Tracy Smog Center | (209) 834-2760")
 
     pdf.showPage()
     pdf.save()

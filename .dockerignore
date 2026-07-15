@@ -1,0 +1,12 @@
+.git
+.github
+.next
+build
+node_modules
+output
+outputs
+work
+.env
+.env.*
+*.tsbuildinfo
+npm-debug.log*

@@ -1,0 +1,138 @@
+name: CI/CD
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "22"
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint, typecheck, test, and build
+        run: npm run verify
+
+  deploy:
+    name: Deploy production
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs:
+      - verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: true
+    env:
+      DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+      VPS_PORT: ${{ vars.VPS_PORT }}
+      APP_PORT: ${{ vars.APP_PORT }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Validate deployment configuration
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          required=(VPS_HOST VPS_USER VPS_SSH_KEY)
+          for name in "${required[@]}"; do
+            if [ -z "${!name:-}" ]; then
+              echo "Missing required GitHub secret: $name" >&2
+              exit 1
+            fi
+          done
+
+      - name: Prepare release files
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          printf '%s\n' "$VPS_SSH_KEY" > "$RUNNER_TEMP/deploy_key"
+          chmod 600 "$RUNNER_TEMP/deploy_key"
+
+          tar \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='.next' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='coverage' \
+            -czf "$RUNNER_TEMP/release.tgz" .
+
+      - name: Copy release to VPS
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          ssh_port="${VPS_PORT:-22}"
+          scp \
+            -i "$RUNNER_TEMP/deploy_key" \
+            -P "$ssh_port" \
+            -o StrictHostKeyChecking=accept-new \
+            "$RUNNER_TEMP/release.tgz" \
+            "$VPS_USER@$VPS_HOST:/tmp/tracy-smog-center-release.tgz"
+
+      - name: Deploy on VPS
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_USER: ${{ secrets.VPS_USER }}
+        run: |
+          ssh_port="${VPS_PORT:-22}"
+          deploy_path="${DEPLOY_PATH:-/opt/tracy-smog-center}"
+          app_port="${APP_PORT:-3012}"
+
+          ssh \
+            -i "$RUNNER_TEMP/deploy_key" \
+            -p "$ssh_port" \
+            -o StrictHostKeyChecking=accept-new \
+            "$VPS_USER@$VPS_HOST" \
+            "DEPLOY_PATH='$deploy_path' APP_PORT='$app_port' bash -s" <<'REMOTE'
+          set -eu
+
+          if [ -z "$DEPLOY_PATH" ] || [ "$DEPLOY_PATH" = "/" ]; then
+            echo "Refusing unsafe deployment path: $DEPLOY_PATH" >&2
+            exit 1
+          fi
+
+          mkdir -p "$DEPLOY_PATH"
+          find "$DEPLOY_PATH" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          tar -xzf /tmp/tracy-smog-center-release.tgz -C "$DEPLOY_PATH"
+
+          cd "$DEPLOY_PATH"
+          APP_PORT="$APP_PORT" docker compose up -d --build --remove-orphans
+
+          rm -f /tmp/tracy-smog-center-release.tgz
+          REMOTE
