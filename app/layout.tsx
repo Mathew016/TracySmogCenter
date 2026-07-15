@@ -28,6 +28,11 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(origin),
     title,
     description,
+    icons: {
+      icon: "/tracy-smog-center-logo.png",
+      shortcut: "/tracy-smog-center-logo.png",
+      apple: "/tracy-smog-center-logo.png",
+    },
     alternates: { canonical: "/" },
     openGraph: {
       type: "website",

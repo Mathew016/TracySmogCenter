@@ -164,11 +164,13 @@ export default function Home() {
       <header className="site-header no-print">
         <div className="site-shell header-inner">
           <a className="brand" href="#top" aria-label="Tracy Smog Center home">
-            <span className="brand-mark" aria-hidden="true">TSC</span>
-            <span>
-              <strong>Tracy Smog Center</strong>
-              <small>Local inspection station</small>
-            </span>
+            <img
+              className="brand-logo"
+              src="/tracy-smog-center-logo.png"
+              alt="Tracy Smog Center"
+              width="150"
+              height="150"
+            />
           </a>
           <nav aria-label="Main navigation">
             <a href="#services">Services</a>
@@ -476,7 +478,13 @@ export default function Home() {
       <footer className="site-footer no-print">
         <div className="site-shell footer-grid">
           <div>
-            <strong>Tracy Smog Center</strong>
+            <img
+              className="footer-logo"
+              src="/tracy-smog-center-logo.png"
+              alt="Tracy Smog Center"
+              width="150"
+              height="150"
+            />
             <p>STAR-certified, test-only smog inspections for all cars, including diesel vehicles.</p>
           </div>
           <div>
