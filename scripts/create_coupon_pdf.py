@@ -56,14 +56,14 @@ def build_coupon(path: Path) -> None:
     copy_x = card_x + 204
     pdf.setFillColor(red)
     pdf.setFont("Helvetica-Bold", 9)
-    pdf.drawString(copy_x, offer_y + 67, "SAVE ON YOUR NEXT SMOG CHECK")
+    pdf.drawString(copy_x, offer_y + 67, "VALID FOR MODEL YEAR 2000 OR NEWER")
     pdf.setFillColor(charcoal)
     pdf.setFont("Helvetica-Bold", 13)
-    pdf.drawString(copy_x, offer_y + 45, "Present before service")
+    pdf.drawString(copy_x, offer_y + 45, "Save on your next smog check")
     pdf.setFillColor(muted)
     pdf.setFont("Helvetica", 8.5)
-    pdf.drawString(copy_x, offer_y + 27, "Final eligibility, exclusions, expiration, and stacking")
-    pdf.drawString(copy_x, offer_y + 14, "terms are subject to shop approval. One coupon per visit.")
+    pdf.drawString(copy_x, offer_y + 27, "Present before service. Final eligibility, exclusions,")
+    pdf.drawString(copy_x, offer_y + 14, "expiration, and stacking terms are subject to shop approval.")
 
     pdf.setFillColor(soft_red)
     pdf.rect(card_x + 1, card_y + 1, card_w - 2, 46, stroke=0, fill=1)

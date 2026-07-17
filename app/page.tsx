@@ -273,7 +273,7 @@ export default function Home() {
                 <p>Website coupon</p>
                 <h2 id="coupon-title">Save on your next smog check</h2>
                 <span>
-                  Present this coupon on your phone before service. Final eligibility, exclusions, expiration, and stacking terms are subject to shop approval.
+                  Valid for vehicles model year 2000 or newer. Present this coupon on your phone before service. Final eligibility, exclusions, expiration, and stacking terms are subject to shop approval.
                 </span>
               </div>
               <div className="coupon-actions no-print">
