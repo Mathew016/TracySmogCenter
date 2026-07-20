@@ -15,7 +15,7 @@ const BUSINESS = {
   phoneDisplay: "(209) 834-2760",
   phoneHref: "tel:+12098342760",
   address: "10 W Grant Line Rd, Tracy, CA",
-  hours: "10:00 AM–4:00 PM",
+  hours: "7:00 AM–6:30 PM",
   directions:
     "https://www.google.com/maps/dir/?api=1&destination=10%20W%20Grant%20Line%20Rd%2C%20Tracy%2C%20CA",
   reviews:
@@ -136,7 +136,7 @@ export default function Home() {
       addressRegion: "CA",
       addressCountry: "US",
     },
-    openingHours: "Mo-Su 10:00-16:00",
+    openingHours: "Mo-Su 07:00-18:30",
     paymentAccepted: "Cash, Check, Credit Card",
     areaServed: ["Tracy", "Manteca", "Lathrop", "Stockton", "Livermore", "Ripon"],
     description:
