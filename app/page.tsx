@@ -10,18 +10,34 @@ declare global {
   }
 }
 
+const WEEKDAY_HOURS = "7:00 AM–6:30 PM";
+
 const BUSINESS = {
   name: "Tracy Smog Center",
   phoneDisplay: "(209) 834-2760",
   phoneHref: "tel:+12098342760",
   address: "10 W Grant Line Rd, Tracy, CA",
-  hours: "7:00 AM–6:30 PM",
+  hoursSchedule: [
+    { day: "Monday", hours: WEEKDAY_HOURS },
+    { day: "Tuesday", hours: WEEKDAY_HOURS },
+    { day: "Wednesday", hours: WEEKDAY_HOURS },
+    { day: "Thursday", hours: WEEKDAY_HOURS },
+    { day: "Friday", hours: WEEKDAY_HOURS },
+    { day: "Saturday", hours: "Closed" },
+    { day: "Sunday", hours: "Closed" },
+  ],
   directions:
     "https://www.google.com/maps/dir/?api=1&destination=10%20W%20Grant%20Line%20Rd%2C%20Tracy%2C%20CA",
   reviews:
     "https://www.google.com/search?q=Tracy+Smog+Center+reviews",
   instagram: "https://www.instagram.com/tracysmogcenter/",
 } as const;
+
+function getTodayHours() {
+  const jsDay = new Date().getDay(); // 0 = Sunday
+  const scheduleIndex = jsDay === 0 ? 6 : jsDay - 1;
+  return BUSINESS.hoursSchedule[scheduleIndex];
+}
 
 const services = [
   {
@@ -124,6 +140,9 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  const todayHours = getTodayHours();
+  const isOpenToday = todayHours.hours !== "Closed";
+
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "AutomotiveBusiness",
@@ -136,7 +155,7 @@ export default function Home() {
       addressRegion: "CA",
       addressCountry: "US",
     },
-    openingHours: "Mo-Su 07:00-18:30",
+    openingHours: "Mo-Fr 07:00-18:30",
     paymentAccepted: "Cash, Check, Credit Card",
     areaServed: ["Tracy", "Manteca", "Lathrop", "Stockton", "Livermore", "Ripon"],
     description:
@@ -152,7 +171,10 @@ export default function Home() {
       <div className="utility-bar no-print">
         <div className="site-shell utility-inner">
           <p>
-            <span className="open-dot" aria-hidden="true" /> Open today {BUSINESS.hours} · Walk-ins welcome
+            <span className="open-dot" aria-hidden="true" />
+            {isOpenToday
+              ? `Open today ${todayHours.hours} · Walk-ins welcome`
+              : `Closed today · Open Mon–Fri ${WEEKDAY_HOURS}`}
           </p>
           <div className="utility-links">
             <a
@@ -258,8 +280,8 @@ export default function Home() {
                 <li><span>04</span> Walk-Ins Welcome</li>
               </ul>
               <div className="board-hours">
-                <strong>Open today</strong>
-                <span>{BUSINESS.hours}</span>
+                <strong>{isOpenToday ? "Open today" : "Closed today"}</strong>
+                <span>{isOpenToday ? todayHours.hours : `Mon–Fri ${WEEKDAY_HOURS}`}</span>
               </div>
             </aside>
           </div>
@@ -417,8 +439,17 @@ export default function Home() {
                   <dd>{BUSINESS.address}</dd>
                 </div>
                 <div>
-                  <dt>Current hours</dt>
-                  <dd>{BUSINESS.hours}</dd>
+                  <dt>Hours</dt>
+                  <dd>
+                    <ul className="hours-list">
+                      {BUSINESS.hoursSchedule.map(({ day, hours }) => (
+                        <li key={day}>
+                          <span>{day}</span>
+                          <span>{hours}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
                 </div>
                 <div>
                   <dt>Phone</dt>
@@ -492,7 +523,14 @@ export default function Home() {
           <div>
             <p>{BUSINESS.address}</p>
             <a href={BUSINESS.phoneHref}>{BUSINESS.phoneDisplay}</a>
-            <p>{BUSINESS.hours}</p>
+            <ul className="hours-list footer-hours">
+              {BUSINESS.hoursSchedule.map(({ day, hours }) => (
+                <li key={day}>
+                  <span>{day}</span>
+                  <span>{hours}</span>
+                </li>
+              ))}
+            </ul>
           </div>
           <div>
             <a href="#privacy">Privacy</a>

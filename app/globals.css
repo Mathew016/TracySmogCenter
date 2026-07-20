@@ -731,6 +731,40 @@ h1 {
   font-weight: 600;
 }
 
+.hours-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.hours-list li {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.hours-list li span:last-child {
+  font-weight: 500;
+  color: var(--muted-text);
+}
+
+.footer-hours {
+  margin-top: 12px;
+}
+
+.footer-hours li {
+  color: #c7c9cc;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.footer-hours li span:last-child {
+  color: #aeb0b4;
+}
+
 .service-area {
   margin-top: 24px;
   color: var(--muted-text);
