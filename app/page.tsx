@@ -10,7 +10,8 @@ declare global {
   }
 }
 
-const WEEKDAY_HOURS = "7:00 AM–6:30 PM";
+const MONDAY_HOURS = "8:00 AM–4:30 PM";
+const TUESDAY_FRIDAY_HOURS = "8:00 AM–5:30 PM";
 
 const BUSINESS = {
   name: "Tracy Smog Center",
@@ -18,11 +19,11 @@ const BUSINESS = {
   phoneHref: "tel:+12098342760",
   address: "10 W Grant Line Rd, Tracy, CA",
   hoursSchedule: [
-    { day: "Monday", hours: WEEKDAY_HOURS },
-    { day: "Tuesday", hours: WEEKDAY_HOURS },
-    { day: "Wednesday", hours: WEEKDAY_HOURS },
-    { day: "Thursday", hours: WEEKDAY_HOURS },
-    { day: "Friday", hours: WEEKDAY_HOURS },
+    { day: "Monday", hours: MONDAY_HOURS },
+    { day: "Tuesday", hours: TUESDAY_FRIDAY_HOURS },
+    { day: "Wednesday", hours: TUESDAY_FRIDAY_HOURS },
+    { day: "Thursday", hours: TUESDAY_FRIDAY_HOURS },
+    { day: "Friday", hours: TUESDAY_FRIDAY_HOURS },
     { day: "Saturday", hours: "Closed" },
     { day: "Sunday", hours: "Closed" },
   ],
@@ -34,9 +35,12 @@ const BUSINESS = {
 } as const;
 
 function getTodayHours() {
-  const jsDay = new Date().getDay(); // 0 = Sunday
-  const scheduleIndex = jsDay === 0 ? 6 : jsDay - 1;
-  return BUSINESS.hoursSchedule[scheduleIndex];
+  const weekday = new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    timeZone: "America/Los_Angeles",
+  }).format(new Date());
+
+  return BUSINESS.hoursSchedule.find(({ day }) => day === weekday) ?? BUSINESS.hoursSchedule[0];
 }
 
 const services = [
@@ -155,7 +159,20 @@ export default function Home() {
       addressRegion: "CA",
       addressCountry: "US",
     },
-    openingHours: "Mo-Fr 07:00-18:30",
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: "Monday",
+        opens: "08:00",
+        closes: "16:30",
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "08:00",
+        closes: "17:30",
+      },
+    ],
     paymentAccepted: "Cash, Check, Credit Card",
     areaServed: ["Tracy", "Manteca", "Lathrop", "Stockton", "Livermore", "Ripon"],
     description:
@@ -174,7 +191,7 @@ export default function Home() {
             <span className="open-dot" aria-hidden="true" />
             {isOpenToday
               ? `Open today ${todayHours.hours} · Walk-ins welcome`
-              : `Closed today · Open Mon–Fri ${WEEKDAY_HOURS}`}
+              : `Closed today · Open Monday ${MONDAY_HOURS}`}
           </p>
           <div className="utility-links">
             <a
@@ -281,7 +298,7 @@ export default function Home() {
               </ul>
               <div className="board-hours">
                 <strong>{isOpenToday ? "Open today" : "Closed today"}</strong>
-                <span>{isOpenToday ? todayHours.hours : `Mon–Fri ${WEEKDAY_HOURS}`}</span>
+                <span>{isOpenToday ? todayHours.hours : `Monday ${MONDAY_HOURS}`}</span>
               </div>
             </aside>
           </div>
